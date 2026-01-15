@@ -1,0 +1,45 @@
+# GreenPulse-AI
+AI-Driven Urban Climate Forecasting and Sustainability Intelligence
+
+GreenPulse-AI is an AI-powered urban climate intelligence system that forecasts future temperatures, computes Urban Heat Island (UHI) intensity, and estimates zone-wise tree plantation requirements using machine learning, real-time weather data, and geospatial visualization. The project is designed to support smart city planning, environmental research, and data-driven sustainability decisions. It is currently configured for Pune, India with a 2027 forecast horizon, but the architecture is scalable to other cities.
+
+Project Overview  
+Urbanization increases surface heat retention, resulting in Urban Heat Islands that negatively impact climate, health, and energy usage. GreenPulse-AI addresses this by predicting future zone-level temperatures, quantifying heat stress, and computing scientifically optimized tree plantation requirements to offset temperature rise. The system integrates AI models, environmental constraints, and interactive GIS-based visualization into a single end-to-end platform.
+
+System Architecture  
+Live weather data is fetched from the EOS Weather API and combined with zone metadata such as geographic coordinates and area. Feature engineering prepares the inputs for machine learning models. A Random Forest regression model predicts future temperatures, while a second Random Forest model estimates cooling impact from tree plantation. These outputs are processed by an optimization engine to calculate the minimum number of Neem trees required per zone. The results are exposed through a REST API and visualized on an interactive web dashboard.
+
+Technology Stack  
+Backend: Python, Flask, Flask-CORS, Scikit-learn, Pandas, NumPy, Requests  
+Frontend: HTML5, CSS3, Bootstrap 5, JavaScript, Leaflet.js  
+Machine Learning: RandomForestRegressor for temperature forecasting and cooling impact estimation  
+APIs: EOS Weather API for real-time temperature data
+
+Project Structure  
+app.py contains the Flask server, API routes, ML model initialization, training logic, and prediction pipeline.  
+templates/index.html contains the interactive frontend dashboard with GIS visualization and analytics.  
+Static assets can be optionally separated into a static directory.  
+
+Core Technical Logic  
+Each urban zone is defined by latitude, longitude, and area in square kilometers, which is converted to square feet for environmental calculations. Live temperature data is fetched from the EOS Weather API; if unavailable, a controlled fallback temperature is used to ensure robustness. The temperature forecasting model predicts future temperature based on current temperature, area, and year offset. Urban Heat Island intensity is calculated as the positive difference between predicted temperature and a fixed target comfort temperature of 25°C. The cooling impact model estimates temperature reduction achievable through Neem tree plantation using scientifically constrained assumptions. An optimization routine iterates over possible tree counts and selects the minimum number required to offset the predicted temperature rise without overestimation.
+
+API Endpoints  
+GET / serves the web dashboard.  
+GET /api/predict returns zone-wise climate intelligence including predicted temperature, UHI delta, existing trees, required additional trees, and total tree count.
+
+Frontend Execution Flow  
+On page load, the frontend requests data from the /api/predict endpoint. The response is used to populate KPI metrics, generate zone-wise table data, and render an interactive Leaflet map. Zones with higher UHI values are visually highlighted to indicate priority areas for intervention.
+
+How to Run the Project  
+Install dependencies using pip install flask flask-cors pandas numpy scikit-learn requests.  
+Run the backend using python app.py.  
+Open a browser and navigate to http://127.0.0.1:5000 to access the dashboard.
+
+Use Cases  
+The system can be used for smart city climate planning, urban heat mitigation analysis, AI-driven sustainability research, environmental policy decision support, and scalable climate intelligence applications.
+
+License  
+This project is released under the MIT License.
+
+Contributions  
+Contributions, improvements, and extensions are welcome via pull requests or issue submissions.
